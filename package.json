@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "vike": "0.4.268",
-    "vite": "npm:@voidzero-dev/vite-plus-core@1.3.0",
-    "vite-plus": "1.3.0"
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.0.0-commit.684686f725ee3cdcb1ff5380875911c8768bf906",
+    "vite-plus": "0.0.0-commit.684686f725ee3cdcb1ff5380875911c8768bf906"
   }
 }
