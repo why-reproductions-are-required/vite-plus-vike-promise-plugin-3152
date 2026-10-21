@@ -6,7 +6,28 @@ Minimal reproduction of [vite-plus#3152](https://github.com/voidzero-dev/vite-pl
 `defineConfig` from `vite-plus@1.3.0` replaces that Promise and loses the property.
 Vike cannot find its plugin in the raw config, adds another instance, and fails during the build.
 
-## Reproduce
+## Preview of the fix
+
+This branch uses the preview from [vite-plus#3154](https://github.com/voidzero-dev/vite-plus/pull/3154),
+commit [`684686f`](https://github.com/voidzero-dev/vite-plus/commit/684686f725ee3cdcb1ff5380875911c8768bf906).
+Both `vite-plus` and the `vite` alias use
+`0.0.0-commit.684686f725ee3cdcb1ff5380875911c8768bf906`.
+The project-local `.npmrc` selects the preview registry.
+
+After cloning this repository, run:
+
+```sh
+git switch verify-pr-3154
+pnpm install --frozen-lockfile
+pnpm test
+pnpm build
+pnpm build:control
+```
+
+All three checks pass with the preview. The Vike warning is gone.
+The page, Vite configs, and regression assertions are unchanged from `main`.
+
+## Reproduce the original failure on `main`
 
 Use Node.js 22.18.0 and pnpm 10.34.7 (both versions are pinned in this repository).
 
@@ -49,7 +70,7 @@ pnpm test
 The client and server builds succeed.
 
 `pnpm test` checks the Promise's own marker property before and after each
-`defineConfig` call. The Vite case passes; the Vite+ case fails with
+`defineConfig` call. On `main`, the Vite case passes; the Vite+ case fails with
 `defineConfig must preserve the own marker property`.
 The assertions describe the expected correct behavior and should pass with a fixed version.
 
@@ -61,7 +82,7 @@ The assertions describe the expected correct behavior and should pass with a fix
 
 The GitHub Actions workflow runs all three checks. Its failure on `main` is expected.
 
-## Dependencies
+## Baseline dependencies (`main`)
 
 - `vite-plus`: `1.3.0`
 - `vite`: `npm:@voidzero-dev/vite-plus-core@1.3.0`
